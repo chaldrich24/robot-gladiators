@@ -1,25 +1,37 @@
+var fightOrSkip = function() {
+  // ask player if they'd like to fight or skip using fightOrSkip function
+  var promptFight = window.prompt('Would you like to FIGHT or SKIP this battle? Enter "FIGHT" or "SKIP" to choose.');
+  promptFight = promptFight.toLowerCase();
+
+  // Conditional Recursive Function Call
+  if (promptFight === "" || promptFight === null) {
+    window.alert("You need to provide a valid answer! Please try again.");
+    return fightOrSkip();
+  }
+
+  // if player picks "skip" confirm and then stop the loop
+  if (promptFight === "skip") {
+    // confirm player wants to skip
+    var confirmSkip = window.confirm("Are you sure you'd like to quit?");
+
+    // if yes (true), leave fight
+    if (confirmSkip) {
+      window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
+      // subtract money from playerMoney for skipping
+      playerInfo.money = playerInfo.money - 10;
+      return true;
+      shop();
+    }
+  }
+  return false;
+}
+
 var fight = function(enemy) {
   console.log(enemy);
   while (enemy.health > 0 && playerInfo.health > 0) {  
-    var promptFight = window.prompt("Would you like to FIGHT or SKIP this battle? Enter 'FIGHT' or 'SKIP' to choose.");
-
-    if (promptFight === "SKIP" || promptFight ==="skip") {
-      // Confirm player wants to skip
-      var confirmSkip = window.confirm("Are you sure you'd like to quit?");
-
-      // if yes, leave fight
-      if (confirmSkip) {
-        window.alert(playerInfo.name + " has decided to skip this fight. Goodbye!");
-        // subtract from playerInfo.money for skipping
-        playerInfo.money = Math.max(0, playerInfo.money - 10);
-        console.log("playerInfo.money", playerInfo.money);
-        break;
-      }
-      // if no, ask question again by running fight()
-      else {
-        fight();
-      }
-    }
+    if (fightOrSkip()) {
+      break;
+    };
    
     // remove enemy's health by subtracting the amount set in the playerInfo.attack variable
     var damage = randomNumber(playerInfo.attack - 3, playerInfo.attack);
@@ -118,12 +130,9 @@ var shop = function() {
     case "LEAVE":
     case "leave":
       window.alert("Leaving the store.");
-  
-      // do nothing, so function will end
       break;
     default:
       window.alert("You did not pick a valid option. Try again.");
-
       // call shop() again to force player to pick a valid option
       shop();
       break;
@@ -194,4 +203,4 @@ var enemyInfo = [
   }
 ];
 
-//startGame();
+startGame();
